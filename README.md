@@ -1,4 +1,4 @@
-# Ubuntu SSH Logon Push notifications via Pushover app<br>
+# Ubuntu SSH+Console Logon Push notifications via Pushover app<br>
 Whenever there is an ssh login to the machine, send a custom push message notification to another device.<br>
 <br>
 ## Step1:  Create account at pushover.net<br>
@@ -17,9 +17,15 @@ Whenever there is an ssh login to the machine, send a custom push message notifi
 * set permissions with:<br>
   `sudo chown root:root /opt/my_scripts/login_notification.sh`<br>
   `sudo chmod 700 /opt/my_scripts/login_notification.sh`<br><br>
-## Step4:  Create PAM trigger to run notification script<br>
+## Step4:  Create PAM trigger to run SSH connection notifications script<br>
 * Add the following line to the end of `/etc/pam.d/sshd`  eg:<br>
 `sudo vi /etc/pam.d/sshd`<br>
 * and add at end the following:<br>
 `# SSH login Push message notification`<br>
+`session optional pam_exec.so /opt/my_scripts/login_notification.sh`<br>
+## Step5:  Create PAM trigger to run Console connection notifications script<br>
+* Add the following line to the end (above@module inclusions) of `/etc/pam.d/login`  eg:<br>
+`sudo vi /etc/pam.d/login`<br>
+* and add at end the following:<br>
+`# Console login Push message notification`<br>
 `session optional pam_exec.so /opt/my_scripts/login_notification.sh`<br>

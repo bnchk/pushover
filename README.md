@@ -17,15 +17,21 @@ Whenever there is an ssh login to the machine, send a custom push message notifi
 * set permissions with:<br>
   `sudo chown root:root /opt/my_scripts/login_notification.sh`<br>
   `sudo chmod 700 /opt/my_scripts/login_notification.sh`<br><br>
-## Step4:  Create PAM trigger to run SSH connection notifications script<br>
+## Step4:  Create PAM trigger - SSH connections<br>
 * Add the following line to the end of `/etc/pam.d/sshd`  eg:<br>
 `sudo vi /etc/pam.d/sshd`<br>
 * and add at end the following:<br>
 `# SSH login Push message notification`<br>
 `session optional pam_exec.so /opt/my_scripts/login_notification.sh`<br>
-## Step5:  Create PAM trigger to run Console connection notifications script<br>
-* Add the following line to the end (above@module inclusions) of `/etc/pam.d/login`  eg:<br>
+## Step5:  Create PAM trigger - Text-based Console connections (eg Ubuntu Server)<br>
+* Add the following line to the end (above final @include calls) of `/etc/pam.d/login`  eg:<br>
 `sudo vi /etc/pam.d/login`<br>
 * and add at end the following:<br>
-`# Console login Push message notification`<br>
+`# Console text-based login Push message notification`<br>
+`session optional pam_exec.so /opt/my_scripts/login_notification.sh`<br>
+## Step6:  Create PAM trigger - GUI Console connections (eg Ubuntu desktop)<br>
+* Add the following line to the end (above final @include calls) of `/etc/pam.d/login`  eg:<br>
+`sudo vi /etc/pam.d/gdm-password`<br>
+* and add at end the following:<br>
+`# Console GUI-based login Push message notification`<br>
 `session optional pam_exec.so /opt/my_scripts/login_notification.sh`<br>
